@@ -27,7 +27,10 @@ int main()
     string compression_result_path = file_path + "_compressed";
     string decompression_result_path = file_path + "_decompressed";
 
+    comp->init_probabilities();
     comp->compress(file_path.c_str(),compression_result_path.c_str());
+
+    decomp->init_probabilities();
     decomp->decompress(compression_result_path.c_str(),decompression_result_path.c_str());
 
     delete(comp);

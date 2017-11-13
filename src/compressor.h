@@ -7,13 +7,19 @@
 #include "bitio.h"
 
 #include <fstream>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
 using namespace std;
 
 class compressor{
+  private:
+    PROBS probabilities[5];
+    unsigned short int scale;
+
   public:
+    void init_probabilities();
     void compress( const char* file_path,const char* result_path );
     void convert_int_to_symbol( char c, SYMBOL *s );
     void error_exit( char *message );

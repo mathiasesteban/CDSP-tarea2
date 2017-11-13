@@ -13,7 +13,12 @@ using namespace std;
 
 class decompressor{
 
+  private:
+    PROBS probabilities[5];
+    unsigned short int scale;
+
   public:
+    void init_probabilities();
     void decompress(const char* file_path,const char* result_path );
     char convert_symbol_to_int( unsigned int count, SYMBOL *s );
     void error_exit( char *message );

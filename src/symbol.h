@@ -9,14 +9,14 @@
  * counts on a scale.  This structure gives a standard way of
  * defining it as a pair of counts.
  */
- 
+
 typedef struct  {
                 unsigned short int low_count;
                 unsigned short int high_count;
                 unsigned short int scale;
                } SYMBOL;
 
-
+/*
 struct {
          char c;
          unsigned short int low;
@@ -24,7 +24,11 @@ struct {
       } probabilities[]= {{ '0',  0,  1  },
                           { '1',  1,  4  },
                           { '\0', 4, 5  }
-                         };
-
+                        };*/
+typedef struct {
+         char c;
+         unsigned short int low;
+         unsigned short int high;
+      } PROBS;
 
 #endif

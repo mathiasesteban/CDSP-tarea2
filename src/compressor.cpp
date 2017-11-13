@@ -9,6 +9,43 @@ void compressor::error_exit( char *message )
     exit( -1 );
 }
 
+//PROBABILIDAD DE LETRAS a,b,c,d
+/*
+void compressor::init_probabilities(){
+  probabilities[0] = {'a',0,1};
+  probabilities[1] = {'b',1,2};
+  probabilities[2] = {'c',2,3};
+  probabilities[3] = {'d',3,4};
+  probabilities[4] = {'\0',4,5};
+  scale = 5; // Ojo con la escala!!!
+}
+*/
+
+void compressor::init_probabilities(){
+
+  for (int i = 1 ; i < 256 ; i++)
+  {
+    probabilities[i-1].c = i;
+    probabilities[i-1].low = i-1;
+    probabilities[i-1].high = i;
+  }
+
+  probabilities[255].c = '\0';
+  probabilities[255].low = 255;
+  probabilities[255].high = 256;
+
+  scale = 256; // Ojo con la escala!!*
+
+
+  for (int i=0;i<256;i++){
+    int c = probabilities[i].c;
+    cout << i << " - " << c << "\n";
+  }
+
+}
+
+
+
 /*
  * This is the compress routine.  It shows the basic algorithm for
  * the compression programs used in this article.  First, an input

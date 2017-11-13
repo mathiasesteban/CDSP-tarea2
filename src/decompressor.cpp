@@ -10,6 +10,44 @@ void decompressor::error_exit( char *message )
     exit( -1 );
 }
 
+
+/*
+ * This method initialize de probability structure model to
+ * compress the data
+ *
+ *
+ */
+
+// PROBABILITIES EXAMPLE
+/*
+void decompressor::init_probabilities(){
+  probabilities[0] = {'a',0,1};
+  probabilities[1] = {'b',1,2};
+  probabilities[2] = {'c',2,3};
+  probabilities[3] = {'d',3,4};
+  probabilities[4] = {'\0',4,5};
+  scale = 5; // Ojo con la escala!!!
+}*/
+
+
+void decompressor::init_probabilities(){
+
+  for (int i = 1 ; i < 256 ; i++)
+  {
+    probabilities[i-1].c = i;
+    probabilities[i-1].low = i-1;
+    probabilities[i-1].high = i;
+  }
+
+  probabilities[255].c = '\0';
+  probabilities[255].low = 255;
+  probabilities[255].high = 256;
+
+  scale = 256; // Ojo con la escala!!*
+
+}
+
+
 /*
  * This expansion routine demonstrates the basic algorithm used for
  * decompression in this article.  It first goes to the modeling
@@ -44,7 +82,7 @@ void decompressor::decompress(const char* file_path,const char* result_path)
 
     for ( ; ; )
     {
-        s.scale = 5;
+        s.scale = scale;
         count = get_current_count( &s );
         c = convert_symbol_to_int( count, &s );
         if ( c == '\0' )
@@ -77,7 +115,7 @@ char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
         {
             s->low_count = probabilities[ i ].low;
             s->high_count = probabilities[ i ].high;
-            s->scale = 5;
+            s->scale = scale;
             return( probabilities[ i ].c );
         }
         if ( probabilities[ i ].c == '\0' )
