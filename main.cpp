@@ -5,8 +5,12 @@
  *
 */
 
+#include <string>
+
 #include "src/compressor.h"
 #include "src/decompressor.h"
+
+using namespace std;
 
 /*
  * This example program compresses an input string, sending
@@ -19,8 +23,12 @@ int main()
     compressor* comp = new compressor();
     decompressor* decomp = new decompressor();
 
-    comp->compress();
-    decomp->decompress();
+    string file_path = "file1";
+    string compression_result_path = file_path + "_compressed";
+    string decompression_result_path = file_path + "_decompressed";
+
+    comp->compress(file_path.c_str(),compression_result_path.c_str());
+    decomp->decompress(compression_result_path.c_str(),decompression_result_path.c_str());
 
     delete(comp);
     delete(decomp);

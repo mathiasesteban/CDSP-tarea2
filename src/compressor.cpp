@@ -18,23 +18,31 @@ void compressor::error_exit( char *message )
  * output the symbols to the bit stream.
  */
 
-void compressor::compress()
+void compressor::compress(const char* file_path,const char* result_path)
 {
     int i;
     char c;
     SYMBOL s;
     FILE *compressed_file;
-    static char *input = "101";
 
-    compressed_file=fopen( "test.cmp", "wb" );
+    fstream source_file;
+    source_file.open(file_path);
+
+    compressed_file=fopen( result_path, "wb" );
+
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
+
     puts( "Compressing..." );
+
     initialize_output_bitstream();
     initialize_arithmetic_encoder();
+
     for ( i=0 ; ; )
     {
-        c = input[ i++ ];
+        c = source_file.get();
+        if (c == EOF)
+          c = '\0';
         convert_int_to_symbol( c, &s );
         encode_symbol( compressed_file, &s );
         if ( c == '\0' )

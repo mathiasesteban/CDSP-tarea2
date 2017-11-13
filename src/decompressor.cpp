@@ -20,20 +20,28 @@ void decompressor::error_exit( char *message )
  * range.  Finally, it asks the modeling unit to convert the
  * high and low values to a symbol.
  */
-void decompressor::decompress()
+void decompressor::decompress(const char* file_path,const char* result_path)
 {
     FILE *compressed_file;
     SYMBOL s;
     char c;
     int count;
 
-    compressed_file=fopen( "test.cmp", "rb" );
+    compressed_file=fopen( file_path, "rb" );
+
+    fstream result_file;
+    result_file.open(result_path,std::fstream::out);
+
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
+
+
+
     puts( "Decoding..." );
     printf( "Incoming characters: " );
     initialize_input_bitstream();
     initialize_arithmetic_decoder( compressed_file );
+
     for ( ; ; )
     {
         s.scale = 5;
@@ -42,10 +50,14 @@ void decompressor::decompress()
         if ( c == '\0' )
             break;
         remove_symbol_from_stream( compressed_file, &s );
-        putc( c, stdout );
+        result_file.put(c);
     }
     putc( '\n', stdout );
+
+    result_file.close();
 }
+
+
 
 /*
  * This modeling function is called to convert a SYMBOL value
