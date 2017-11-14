@@ -18,8 +18,18 @@ void decompressor::error_exit( char *message )
  *
  */
 
+decompressor::decompressor(){
+  scale=0;
+  probabilities = new PROBS[5];
+}
+
+decompressor::~decompressor(){
+
+}
+
+
 // PROBABILITIES EXAMPLE
-/*
+
 void decompressor::init_probabilities(){
   probabilities[0] = {'a',0,1};
   probabilities[1] = {'b',1,2};
@@ -27,16 +37,16 @@ void decompressor::init_probabilities(){
   probabilities[3] = {'d',3,4};
   probabilities[4] = {'\0',4,5};
   scale = 5; // Ojo con la escala!!!
-}*/
-
-
+}
+/*
 void decompressor::init_probabilities(){
 
-  for (int i = 1 ; i < 256 ; i++)
+ for (unsigned short i = 1 ; i < 256 ; i++)
   {
-    probabilities[i-1].c = i;
-    probabilities[i-1].low = i-1;
-    probabilities[i-1].high = i;
+    int index = i-1;
+    probabilities[index].c = i;
+    probabilities[index].low = i-1;
+    probabilities[index].high = i;
   }
 
   probabilities[255].c = '\0';
@@ -44,8 +54,7 @@ void decompressor::init_probabilities(){
   probabilities[255].high = 256;
 
   scale = 256; // Ojo con la escala!!*
-
-}
+}*/
 
 
 /*
