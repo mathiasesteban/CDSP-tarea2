@@ -11,7 +11,7 @@ void compressor::error_exit( char *message )
 
 compressor::compressor(){
   scale=0;
-  probabilities = new PROBS[5];
+  probabilities = new PROBS[256];
 
 }
 
@@ -20,7 +20,7 @@ compressor::~compressor(){
 }
 
 //PROBABILIDAD DE LETRAS a,b,c,d
-
+/*
 void compressor::init_probabilities(){
   probabilities[0] = {'a',0,1};
   probabilities[1] = {'b',1,2};
@@ -28,9 +28,9 @@ void compressor::init_probabilities(){
   probabilities[3] = {'d',3,4};
   probabilities[4] = {'\0',4,5};
   scale = 5; // Ojo con la escala!!!
-}
+}*/
 
-/*
+
 void compressor::init_probabilities(){
 
   for (unsigned short i = 1 ; i < 256 ; i++)
@@ -47,14 +47,13 @@ void compressor::init_probabilities(){
 
   scale = 256; // Ojo con la escala!!*
 
-
+/*
   for (int i=0;i<256;i++){
     unsigned short c = probabilities[i].c;
     cout << i << " - " << "{" << c << ", " << probabilities[i].low << ", " <<  probabilities[i].high << "}\n";
-  }
+  }*/
 
 }
-*/
 
 
 /*
@@ -89,8 +88,9 @@ void compressor::compress(const char* file_path,const char* result_path)
     for ( i=0 ; ; )
     {
         c = source_file.get();
-        if (c == EOF)
+        if (c == EOF){ // Revisar
           c = '\0';
+        }
         convert_int_to_symbol( c, &s );
         encode_symbol( compressed_file, &s );
         if ( c == '\0' )
@@ -121,11 +121,11 @@ void compressor::convert_int_to_symbol( char c, SYMBOL *s )
         {
             s->low_count = probabilities[ i ].low;
             s->high_count = probabilities[ i ].high;
-            s->scale = 5;
+            s->scale = scale;
             return;
         }
         if ( probabilities[i].c == '\0' )
             error_exit( "Trying to encode a char not in the table" );
         i++;
     }
-}
+} // Notar que es importante que '\0' este al final de la tabla de probabilidades

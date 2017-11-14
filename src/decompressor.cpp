@@ -20,7 +20,7 @@ void decompressor::error_exit( char *message )
 
 decompressor::decompressor(){
   scale=0;
-  probabilities = new PROBS[5];
+  probabilities = new PROBS[256];
 }
 
 decompressor::~decompressor(){
@@ -29,7 +29,7 @@ decompressor::~decompressor(){
 
 
 // PROBABILITIES EXAMPLE
-
+/*
 void decompressor::init_probabilities(){
   probabilities[0] = {'a',0,1};
   probabilities[1] = {'b',1,2};
@@ -37,8 +37,8 @@ void decompressor::init_probabilities(){
   probabilities[3] = {'d',3,4};
   probabilities[4] = {'\0',4,5};
   scale = 5; // Ojo con la escala!!!
-}
-/*
+}*/
+
 void decompressor::init_probabilities(){
 
  for (unsigned short i = 1 ; i < 256 ; i++)
@@ -54,7 +54,12 @@ void decompressor::init_probabilities(){
   probabilities[255].high = 256;
 
   scale = 256; // Ojo con la escala!!*
-}*/
+
+  for (int i=0;i<256;i++){
+    unsigned short c = probabilities[i].c;
+    cout << i << " - " << "{" << c << ", " << probabilities[i].low << ", " <<  probabilities[i].high << "}\n";
+  }
+}
 
 
 /*
