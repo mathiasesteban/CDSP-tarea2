@@ -2,7 +2,7 @@
 #include "utils.h"
 
 // A generic error routine.
-void compressor::error_exit( char *message )
+void compressor::error_exit(const char *message )
 {
     puts( message );
     exit( -1 );

@@ -23,7 +23,7 @@ class decompressor{
     //void init_probabilities();
     void decompress(const char* file_path,const char* result_path );
     char convert_symbol_to_int( unsigned int count, SYMBOL *s );
-    void error_exit( char *message );
+    void error_exit( const char *message );
     ~decompressor();
 
 };
