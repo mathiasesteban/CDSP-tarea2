@@ -16,7 +16,7 @@ compressor::compressor(){
 }
 
 compressor::~compressor(){
-  
+
 }
 
 //PROBABILIDAD DE LETRAS a,b,c,d
@@ -72,6 +72,8 @@ void compressor::compress(const char* file_path,const char* result_path)
     SYMBOL s;
     FILE *compressed_file;
 
+
+    // EN vez de tener un string hardcoded, leemos un archivo desde el fyle system
     fstream source_file;
     source_file.open(file_path);
 
@@ -88,7 +90,9 @@ void compressor::compress(const char* file_path,const char* result_path)
     for ( i=0 ; ; )
     {
         c = source_file.get();
-        if (c == EOF){ // Revisar
+        // Como no es un string, sino que leo desde el stream, puedo en un cierto momento llegar a EOF,
+        // esto es equivalente a llegar al char '\0' en el model anterior con string
+        if (c == EOF){
           c = '\0';
         }
         convert_int_to_symbol( c, &s );

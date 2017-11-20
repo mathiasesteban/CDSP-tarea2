@@ -18,12 +18,12 @@ using namespace std;
  * sending the decoded characters to the screen.
  */
 
-int main()
+int main(int argc, char **argv)
 {
     compressor* comp = new compressor();
     decompressor* decomp = new decompressor();
 
-    string file_path = "file1";
+    string file_path = argv[1];
     string compression_result_path = file_path + "_compressed";
     string decompression_result_path = file_path + "_decompressed";
 
@@ -33,8 +33,8 @@ int main()
     decomp->init_probabilities();
     decomp->decompress(compression_result_path.c_str(),decompression_result_path.c_str());
 
-    //delete(comp);
-    //delete(decomp);
+    delete(comp);
+    delete(decomp);
 
     return 0;
 }
