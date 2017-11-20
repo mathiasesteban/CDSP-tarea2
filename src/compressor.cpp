@@ -1,60 +1,20 @@
 #include "compressor.h"
+#include "utils.h"
 
-/*
- * A generic error routine.
- */
+// A generic error routine.
 void compressor::error_exit( char *message )
 {
     puts( message );
     exit( -1 );
 }
 
-compressor::compressor(){
-  scale=0;
-  probabilities = new PROBS[256];
-
+compressor::compressor()
+{
+  scale=256;
+  probabilities = initialize_probabilities(256);
 }
 
-compressor::~compressor(){
-
-}
-
-//PROBABILIDAD DE LETRAS a,b,c,d
-/*
-void compressor::init_probabilities(){
-  probabilities[0] = {'a',0,1};
-  probabilities[1] = {'b',1,2};
-  probabilities[2] = {'c',2,3};
-  probabilities[3] = {'d',3,4};
-  probabilities[4] = {'\0',4,5};
-  scale = 5; // Ojo con la escala!!!
-}*/
-
-
-void compressor::init_probabilities(){
-
-  for (unsigned short i = 1 ; i < 256 ; i++)
-  {
-    int index = i-1;
-    probabilities[index].c = i;
-    probabilities[index].low = i-1;
-    probabilities[index].high = i;
-  }
-
-  probabilities[255].c = '\0';
-  probabilities[255].low = 255;
-  probabilities[255].high = 256;
-
-  scale = 256; // Ojo con la escala!!*
-
-/*
-  for (int i=0;i<256;i++){
-    unsigned short c = probabilities[i].c;
-    cout << i << " - " << "{" << c << ", " << probabilities[i].low << ", " <<  probabilities[i].high << "}\n";
-  }*/
-
-}
-
+compressor::~compressor(){}
 
 /*
  * This is the compress routine.  It shows the basic algorithm for
@@ -104,8 +64,6 @@ void compressor::compress(const char* file_path,const char* result_path)
     flush_output_bitstream( compressed_file );
     fclose( compressed_file);
 }
-
-
 
 /*
  * This routine is called to convert a character read in from
