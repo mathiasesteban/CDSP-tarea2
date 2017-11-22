@@ -40,23 +40,29 @@ void decompressor::decompress(const char* file_path,const char* result_path)
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
 
-
-
     puts( "Decoding..." );
     printf( "Incoming characters: " );
     initialize_input_bitstream();
     initialize_arithmetic_decoder( compressed_file );
 
     for ( ; ; )
-    {
+    {   
         s.scale = scale;
         count = get_current_count( &s );
-        c = convert_symbol_to_int( count, &s );
+
+        c = convert_symbol_to_int( count, &s );    
+
         if ( c == '\0' )
             break;
+
         remove_symbol_from_stream( compressed_file, &s );
+        
+
+        update_probabilities(probabilities,scale,c);            
+        
         result_file.put(c);
     }
+
     putc( '\n', stdout );
 
     result_file.close();
@@ -74,7 +80,10 @@ char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
 
     i = 0;
     for ( ; ; )
-    {
+    {   
+
+        //cout << "trying to access: " << i << "\n";
+
         if ( count >= probabilities[ i ].low &&
              count < probabilities[ i ].high )
         {
