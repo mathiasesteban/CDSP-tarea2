@@ -33,8 +33,8 @@ int main(int argc, char **argv)
     //decomp->init_probabilities();
     decomp->decompress(compression_result_path.c_str(),decompression_result_path.c_str());
 
-    delete(comp);
-    delete(decomp);
+    //delete(comp);
+    //delete(decomp);
 
     return 0;
 }

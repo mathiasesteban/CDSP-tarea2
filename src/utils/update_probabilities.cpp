@@ -8,7 +8,7 @@ void update_probabilities(PROBS* &probs,unsigned short int &scale, char c){
 
   probs[c-1].high++;
 
-  for (unsigned short i = c ; i < scale -1  ; i++)
+  for (unsigned short i = c ; i < 256  ; i++)
   {
     probs[i].low++;
     probs[i].high++;
