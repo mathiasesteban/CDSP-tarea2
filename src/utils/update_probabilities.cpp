@@ -15,8 +15,8 @@ void update_probabilities(PROBS* &probs,unsigned short int &scale, char c){
   }
   scale++;
 
-  cout << "The following character \"" 
-  		<< c << "\" updated its probability to " 
-  		<< probs[c-1].high - probs[c-1].low 
-  		<< "/" << scale << "\n";
+  /*cout << "The following character \""
+  		<< c << "\" updated its probability to "
+  		<< probs[c-1].high - probs[c-1].low
+  		<< "/" << scale << "\n";*/
 }

@@ -56,8 +56,9 @@ void compressor::compress(const char* file_path,const char* result_path)
           c = '\0';
         }
         convert_int_to_symbol( c, &s );
-        update_probabilities(probabilities,scale,c);
+
         encode_symbol( compressed_file, &s );
+        update_probabilities(probabilities,scale,c);
         if ( c == '\0' )
             break;
     }
