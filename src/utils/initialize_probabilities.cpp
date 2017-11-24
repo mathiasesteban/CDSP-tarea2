@@ -19,10 +19,10 @@ PROBS* probabilities = new PROBS[dimension];
   probabilities[dimension -1 ].low = dimension -1 ;
   probabilities[dimension -1 ].high = dimension;
 
-  for (int i=0;i<256;i++){
+  /*for (int i=0;i<256;i++){
     unsigned short c = probabilities[i].c;
     cout << i << " - " << "{" << c << ", " << probabilities[i].low << ", " <<  probabilities[i].high << "}\n";
-  }
+  }*/
 
 return probabilities;
 

@@ -1,5 +1,6 @@
 #include "../utils.h"
 #include <iostream>
+#include "../coder.h"
 
 using namespace std;
 
@@ -14,6 +15,12 @@ void update_probabilities(PROBS* &probs,unsigned short int &scale, char c){
     probs[i].high++;
   }
   scale++;
+
+
+  if (scale == MAXIMUM_SCALE){
+    probs = initialize_probabilities(256);
+    scale = 256;
+  }
 
   /*cout << "The following character \""
   		<< c << "\" updated its probability to "

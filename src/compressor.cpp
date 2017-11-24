@@ -52,15 +52,18 @@ void compressor::compress(const char* file_path,const char* result_path)
         c = source_file.get();
         // Como no es un string, sino que leo desde el stream, puedo en un cierto momento llegar a EOF,
         // esto es equivalente a llegar al char '\0' en el modelo anterior con string
-        if (c == EOF){
-          c = '\0';
-        }
+
         convert_int_to_symbol( c, &s );
 
         encode_symbol( compressed_file, &s );
-        update_probabilities(probabilities,scale,c);
+
+        if (c == EOF){
+          c = '\0';
+        }
         if ( c == '\0' )
             break;
+        update_probabilities(probabilities,scale,c);
+
     }
     flush_arithmetic_encoder( compressed_file );
     flush_output_bitstream( compressed_file );

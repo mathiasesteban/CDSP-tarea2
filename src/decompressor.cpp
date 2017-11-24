@@ -50,13 +50,17 @@ void decompressor::decompress(const char* file_path,const char* result_path)
         s.scale = scale;
         count = get_current_count( &s );
 
+
+
         c = convert_symbol_to_int( count, &s );
 
-        if ( c == '\0' )
-            break;
+
+
 
         remove_symbol_from_stream( compressed_file, &s );
 
+        if ( c == EOF )
+            break;
 
         update_probabilities(probabilities,scale,c);
 
@@ -91,7 +95,7 @@ char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
             s->high_count = probabilities[ i ].high;
             s->scale = scale;
 
-            cout << "Decoded byte: " << probabilities[ i ].c << " (" << (int) probabilities[ i ].c << ")\n";
+            //cout << "Decoded byte: " << probabilities[ i ].c << " (" << (int) probabilities[ i ].c << ")\n";
 
             return( probabilities[ i ].c );
         }
