@@ -24,6 +24,6 @@ extern long underflow_bits;    /* The present underflow count in  */
 void initialize_arithmetic_decoder( FILE *stream );
 void remove_symbol_from_stream( FILE *stream, SYMBOL *s );
 void initialize_arithmetic_encoder( void );
-void encode_symbol( FILE *stream, SYMBOL *s );
+void encode_symbol( FILE *stream, SYMBOL *s, unsigned int &bytesEscritos,unsigned int &bitsAcumulados );
 void flush_arithmetic_encoder( FILE *stream );
 short int get_current_count( SYMBOL *s );

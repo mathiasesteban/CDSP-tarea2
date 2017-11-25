@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "symbol.h"
+#include <fstream>
 
 using namespace std;
 
@@ -19,5 +20,8 @@ void update_probabilities(PROBS** &probs,unsigned int state,char c, unsigned int
 
 // Cambiar el estado
 void change_state(int &state,int k, char c);
+
+// Escribe en el archivo la informacion actual
+void imprimir_estadistica(string info_path, int state, unsigned int bytesLeidos, unsigned int bytesEscritos);
 
 #endif

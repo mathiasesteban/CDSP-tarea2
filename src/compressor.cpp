@@ -50,14 +50,37 @@ void compressor::compress(const char* file_path,const char* result_path)
     initialize_output_bitstream();
     initialize_arithmetic_encoder();
 
+
+    //Estadisticas
+    unsigned int bytesLeidos = 0;
+    unsigned int bytesEscritos = 0;
+    unsigned int bitsAcumulados = 0;
+
+
+    string info_path = string(result_path) +"_INFO";
+
+    //fstream estadisticas;
+    //estadisticas.open(info_path,std::fstream::out);
+
+    std::ofstream estadisticas;
+    estadisticas.open(info_path, std::ios_base::app);
+
+    estadisticas << "Archivo de informacion sobre la compresion\n";
+    estadisticas << "******************************************\n\n";
+    estadisticas << "Archivo objetivo: " << file_path << "\n";
+    estadisticas << "Orden de Markov: " << k << "\n";
+    estadisticas << "Tamaño del alfabeto: " << M << "\n\n";
+    estadisticas.close();
+
     /* ------------------------ PROCESO DE COMPRESION ----------------------*/
     for ( i=0 ; ; )
     {
         c = source_file.get();
+        bytesLeidos++;
 
         convert_int_to_symbol( c, &s );
 
-        encode_symbol( compressed_file, &s );
+        encode_symbol( compressed_file, &s, bytesEscritos,bitsAcumulados );
 
         if (c == EOF){
           break;
@@ -65,6 +88,12 @@ void compressor::compress(const char* file_path,const char* result_path)
 
         update_probabilities(probabilities,state,c,M);
         change_state(state,k,c);
+
+        // Por cada Kb leido registro el estado actual
+        if (bytesLeidos % 1024 == 0){
+          cout << "passed\n";
+          imprimir_estadistica(info_path,state,bytesLeidos,bytesEscritos);
+        }
 
     }
     /* ----------------------------------------------------------------------*/

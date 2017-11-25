@@ -51,7 +51,7 @@ void initialize_arithmetic_encoder()
  * the output stream.  Finally, high and low are stable again and
  * the routine returns.
  */
-void encode_symbol( FILE *stream, SYMBOL *s )
+void encode_symbol( FILE *stream, SYMBOL *s,unsigned int &bytesEscritos,unsigned int &bitsAcumulados )
 {
     long range;
 /*
@@ -75,10 +75,26 @@ void encode_symbol( FILE *stream, SYMBOL *s )
         if ( ( high & 0x8000 ) == ( low & 0x8000 ) )
         {
             output_bit( stream, high & 0x8000 );
+
+            //Estadisticas - no pertenece al codigo original
+            bitsAcumulados++;
+            if (bitsAcumulados == 8){
+              bytesEscritos++;
+              bitsAcumulados = 0;
+            }
+
+
             while ( underflow_bits > 0 )
             {
                 output_bit( stream, ~high & 0x8000 );
                 underflow_bits--;
+
+                //Estadisticas - no pertenece al codigo original
+                bitsAcumulados++;
+                if (bitsAcumulados == 8){
+                  bytesEscritos++;
+                  bitsAcumulados = 0;
+                }
             }
         }
 /*
