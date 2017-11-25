@@ -3,26 +3,32 @@
 
 using namespace std;
 
+/*
+* Funcion encargada de inicializar el modelo estadistico
+* Para cada uno de los estados (la cantidad queda determinada por el orden de
+* markov k) se inicializa un array con los intervalos de cada char.
+* En la ultima posicion de dicho array se mapea el simbolo '\0'
+*/
+
 PROBS** initialize_probabilities(int k, int M){
 
-cout << "Initializing Probabilities\n";
+  cout << "Initializing Probabilities\n";
 
-PROBS** model;
-unsigned int tope;
+  PROBS** model;
+  unsigned int tope;
 
-if (k == 0){
-  model = new PROBS*[1];
-  tope = 1;
-}
-else if (k == 1){
-  model = new PROBS*[256];
-  tope = 256;
-}
-else{
-  model = new PROBS*[65536];
-  tope = 65536;
-}
-cout << "firs step completed";
+  if (k == 0){
+    model = new PROBS*[1];
+    tope = 1;
+  }
+  else if (k == 1){
+    model = new PROBS*[256];
+    tope = 256;
+  }
+  else{
+    model = new PROBS*[65536];
+    tope = 65536;
+  }
 
   /* Se inicializa cada simbolo con una probabilidad de 1/256
   independientemente del orden markov (k) elegido
@@ -45,21 +51,9 @@ cout << "firs step completed";
     model[j] = probabilities;
   }
 
+  return model;
 
-return model;
-
-
-
-for (int p = 0; p<tope; p++){
-
-  for (int r = 0; r<M; r++){
-    cout << "(" << model[p][r].low << ","  << model[p][r].high <<")";
-  }
-
-  cout << "********************* " << p << "********************************\n";
-}
-
-}
+} // Fin inicializacion
 
 /* Ejemplo con alfabeto A = { a,b,c,d }
 *******************************************************/

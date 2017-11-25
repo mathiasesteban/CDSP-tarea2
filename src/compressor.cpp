@@ -1,7 +1,7 @@
 #include "compressor.h"
 #include "utils.h"
 
-// A generic error routine.
+// Rutina de error
 void compressor::error_exit(const char *message )
 {
     puts( message );
@@ -13,6 +13,7 @@ compressor::compressor(int k, int M)
   //Comienzo en el estado 0
   state=0;
   this->M = M;
+  this->k = k;
   probabilities = initialize_probabilities(k,M);
 }
 
@@ -34,39 +35,40 @@ void compressor::compress(const char* file_path,const char* result_path)
     SYMBOL s;
     FILE *compressed_file;
 
-
-    // EN vez de tener un string hardcoded, leemos un archivo desde el fyle system
+    // Archivo a comprimir
     fstream source_file;
     source_file.open(file_path);
 
+    // Archivo resultado de la compresion
     compressed_file=fopen( result_path, "wb" );
 
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
 
-    puts( "Compressing..." );
+    puts( "Compressing...\n" );
 
     initialize_output_bitstream();
     initialize_arithmetic_encoder();
 
+    /* ------------------------ PROCESO DE COMPRESION ----------------------*/
     for ( i=0 ; ; )
     {
         c = source_file.get();
-        // Como no es un string, sino que leo desde el stream, puedo en un cierto momento llegar a EOF,
-        // esto es equivalente a llegar al char '\0' en el modelo anterior con string
 
         convert_int_to_symbol( c, &s );
 
         encode_symbol( compressed_file, &s );
 
         if (c == EOF){
-          c = '\0';
+          break;
         }
-        if ( c == '\0' )
-            break;
+
         update_probabilities(probabilities,state,c,M);
+        change_state(state,k,c);
 
     }
+    /* ----------------------------------------------------------------------*/
+
     flush_arithmetic_encoder( compressed_file );
     flush_output_bitstream( compressed_file );
     fclose( compressed_file);
@@ -97,4 +99,4 @@ void compressor::convert_int_to_symbol( char c, SYMBOL *s )
             error_exit( "Trying to encode a char not in the table" );
         i++;
     }
-} // Notar que es importante que '\0' este al final de la tabla de probabilidades
+}

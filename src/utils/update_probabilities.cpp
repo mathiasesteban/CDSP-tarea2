@@ -4,10 +4,21 @@
 
 using namespace std;
 
+/*
+* La siguiente funcion, es la encargada de actualizar el modelo probabilistico
+* Para esto,dado el estado actual,aumenta el ancho de intervalo del char leido.
+* Debido a las limitaciones del codificador y de la manipulacion de memoria
+* finita, se debe considerar la posibilidad de overflow y evitarla. Ante esto
+* se realiza un reescalado de los intervalos en el estado considerado, el mismo
+* consiste en dividir los totales entre 2.
+*/
+
+
 void update_probabilities(PROBS** &probs,unsigned int state,char c, unsigned int M){
 
   // Se aumenta la probababilidad del char c
   probs[state][c-1].high++;
+  // Se aumentan en uno todos los intervalos superiores a c
   for (unsigned short i = c ; i < M  ; i++)
   {
     probs[state][i].low++;
@@ -18,6 +29,7 @@ void update_probabilities(PROBS** &probs,unsigned int state,char c, unsigned int
    ************************************************************************ */
 
   /* Reescalado a 0: reinicializa la estructura
+  este metodo desperdicia informacion ya recopilada
   *********************************************** */
   /*
   if (scale == MAXIMUM_SCALE){
@@ -46,5 +58,5 @@ void update_probabilities(PROBS** &probs,unsigned int state,char c, unsigned int
         probs[state][i].high = probs[state][i].low +1 ;
     }
 
-  }
-}
+  } // Fin reescalado
+} // Fin actualizacion de probabilidades

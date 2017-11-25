@@ -1,7 +1,7 @@
 #include "decompressor.h"
 #include "utils.h"
 
-// A generic error routine.
+// Rutina de error
 void decompressor::error_exit( const char *message )
 {
     puts( message );
@@ -12,6 +12,7 @@ decompressor::decompressor(int k,int M){
   //Comienzo en el estado 0
   state=0;
   this->M = M;
+  this->k = k;
   probabilities = initialize_probabilities(k,M);
 }
 
@@ -34,30 +35,28 @@ void decompressor::decompress(const char* file_path,const char* result_path)
     char c;
     int count;
 
+    // Archivo a decomprimir
     compressed_file=fopen( file_path, "rb" );
 
+    // Resultado de la descompresion
     fstream result_file;
     result_file.open(result_path,std::fstream::out);
 
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
 
-    puts( "Decoding..." );
-    printf( "Incoming characters: " );
+    puts( "Decoding...\n" );
+
     initialize_input_bitstream();
     initialize_arithmetic_decoder( compressed_file );
 
+    /* ---------- PROCESO DE DESCOMPRESION ------------- */
     for ( ; ; )
     {
         s.scale = probabilities[state][M-1].high;
         count = get_current_count( &s );
 
-
-
         c = convert_symbol_to_int( count, &s );
-
-
-
 
         remove_symbol_from_stream( compressed_file, &s );
 
@@ -65,12 +64,13 @@ void decompressor::decompress(const char* file_path,const char* result_path)
             break;
 
         update_probabilities(probabilities,state,c,M);
+        change_state(state,k,c);
 
         result_file.put(c);
     }
+    /* ----------------------------------------------------- */
 
     putc( '\n', stdout );
-
     result_file.close();
 }
 
@@ -83,13 +83,9 @@ void decompressor::decompress(const char* file_path,const char* result_path)
 char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
 {
     int i;
-
     i = 0;
     for ( ; ; )
     {
-
-        //cout << "trying to access: " << i << "\n";
-
         if ( count >= probabilities[state][ i ].low &&
              count < probabilities[state][ i ].high )
         {

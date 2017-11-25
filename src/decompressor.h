@@ -16,12 +16,12 @@ class decompressor{
 
   private:
     PROBS** probabilities;
-    unsigned int state;
+    int state;
     unsigned int M;
+    unsigned int k;
 
   public:
   	decompressor(int k,int M);
-    //void init_probabilities();
     void decompress(const char* file_path,const char* result_path );
     char convert_symbol_to_int( unsigned int count, SYMBOL *s );
     void error_exit( const char *message );
