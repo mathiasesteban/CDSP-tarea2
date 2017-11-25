@@ -8,9 +8,11 @@ void decompressor::error_exit( const char *message )
     exit( -1 );
 }
 
-decompressor::decompressor(){
-  scale=256;
-  probabilities = initialize_probabilities(256);
+decompressor::decompressor(int k,int M){
+  //Comienzo en el estado 0
+  state=0;
+  this->M = M;
+  probabilities = initialize_probabilities(k,M);
 }
 
 decompressor::~decompressor(){}
@@ -47,7 +49,7 @@ void decompressor::decompress(const char* file_path,const char* result_path)
 
     for ( ; ; )
     {
-        s.scale = scale;
+        s.scale = probabilities[state][M-1].high;
         count = get_current_count( &s );
 
 
@@ -62,7 +64,7 @@ void decompressor::decompress(const char* file_path,const char* result_path)
         if ( c == EOF )
             break;
 
-        update_probabilities(probabilities,scale,c);
+        update_probabilities(probabilities,state,c,M);
 
         result_file.put(c);
     }
@@ -88,18 +90,18 @@ char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
 
         //cout << "trying to access: " << i << "\n";
 
-        if ( count >= probabilities[ i ].low &&
-             count < probabilities[ i ].high )
+        if ( count >= probabilities[state][ i ].low &&
+             count < probabilities[state][ i ].high )
         {
-            s->low_count = probabilities[ i ].low;
-            s->high_count = probabilities[ i ].high;
-            s->scale = scale;
+            s->low_count = probabilities[state][ i ].low;
+            s->high_count = probabilities[state][ i ].high;
+            s->scale = probabilities[state][M-1].high;
 
             //cout << "Decoded byte: " << probabilities[ i ].c << " (" << (int) probabilities[ i ].c << ")\n";
 
-            return( probabilities[ i ].c );
+            return( probabilities[state][ i ].c );
         }
-        if ( probabilities[ i ].c == '\0' )
+        if ( probabilities[state][ i ].c == '\0' )
             error_exit( "Failure to decode character" );
         i++;
     }

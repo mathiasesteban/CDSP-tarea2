@@ -3,33 +3,66 @@
 
 using namespace std;
 
-PROBS* initialize_probabilities(unsigned int dimension){
+PROBS** initialize_probabilities(int k, int M){
 
-PROBS* probabilities = new PROBS[dimension];
+cout << "Initializing Probabilities\n";
 
-  for (unsigned short i = 1 ; i < dimension ; i++)
-  {
-    int index = i-1;
-    probabilities[index].c = i;
-    probabilities[index].low = i-1;
-    probabilities[index].high = i;
+PROBS** model;
+unsigned int tope;
+
+if (k == 0){
+  model = new PROBS*[1];
+  tope = 1;
+}
+else if (k == 1){
+  model = new PROBS*[256];
+  tope = 256;
+}
+else{
+  model = new PROBS*[65536];
+  tope = 65536;
+}
+cout << "firs step completed";
+
+  /* Se inicializa cada simbolo con una probabilidad de 1/256
+  independientemente del orden markov (k) elegido
+  *************************************************************/
+
+  for(int j = 0; j<tope; j++){
+    PROBS* probabilities = new PROBS[M];
+    for (unsigned short i = 1 ; i < M ; i++)
+    {
+      int index = i-1;
+      probabilities[index].c = i;
+      probabilities[index].low = i-1;
+      probabilities[index].high = i;
+    }
+
+    probabilities[M-1].c = '\0';
+    probabilities[M-1].low = M -1 ;
+    probabilities[M-1].high = M;
+
+    model[j] = probabilities;
   }
 
-  probabilities[dimension -1 ].c = '\0';
-  probabilities[dimension -1 ].low = dimension -1 ;
-  probabilities[dimension -1 ].high = dimension;
 
-  /*for (int i=0;i<256;i++){
-    unsigned short c = probabilities[i].c;
-    cout << i << " - " << "{" << c << ", " << probabilities[i].low << ", " <<  probabilities[i].high << "}\n";
-  }*/
+return model;
 
-return probabilities;
+
+
+for (int p = 0; p<tope; p++){
+
+  for (int r = 0; r<M; r++){
+    cout << "(" << model[p][r].low << ","  << model[p][r].high <<")";
+  }
+
+  cout << "********************* " << p << "********************************\n";
+}
 
 }
 
-
-//PROBABILIDAD DE LETRAS a,b,c,d
+/* Ejemplo con alfabeto A = { a,b,c,d }
+*******************************************************/
 /*
 void compressor::init_probabilities(){
   probabilities[0] = {'a',0,1};
@@ -37,5 +70,5 @@ void compressor::init_probabilities(){
   probabilities[2] = {'c',2,3};
   probabilities[3] = {'d',3,4};
   probabilities[4] = {'\0',4,5};
-  scale = 5; // Ojo con la escala!!!
+  scale = 5;
 }*/

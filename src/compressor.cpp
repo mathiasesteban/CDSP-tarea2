@@ -8,10 +8,12 @@ void compressor::error_exit(const char *message )
     exit( -1 );
 }
 
-compressor::compressor()
+compressor::compressor(int k, int M)
 {
-  scale=256;
-  probabilities = initialize_probabilities(256);
+  //Comienzo en el estado 0
+  state=0;
+  this->M = M;
+  probabilities = initialize_probabilities(k,M);
 }
 
 compressor::~compressor(){}
@@ -62,7 +64,7 @@ void compressor::compress(const char* file_path,const char* result_path)
         }
         if ( c == '\0' )
             break;
-        update_probabilities(probabilities,scale,c);
+        update_probabilities(probabilities,state,c,M);
 
     }
     flush_arithmetic_encoder( compressed_file );
@@ -84,14 +86,14 @@ void compressor::convert_int_to_symbol( char c, SYMBOL *s )
     i=0;
     for ( ; ; )
     {
-        if ( c == probabilities[ i ].c )
+        if ( c == probabilities[state][i].c )
         {
-            s->low_count = probabilities[ i ].low;
-            s->high_count = probabilities[ i ].high;
-            s->scale = scale;
+            s->low_count = probabilities[state][i].low;
+            s->high_count = probabilities[state][i].high;
+            s->scale = probabilities[state][M-1].high;
             return;
         }
-        if ( probabilities[i].c == '\0' )
+        if ( probabilities[state][i].c == '\0' )
             error_exit( "Trying to encode a char not in the table" );
         i++;
     }

@@ -15,11 +15,12 @@ using namespace std;
 class decompressor{
 
   private:
-    PROBS* probabilities;
-    unsigned short int scale;
+    PROBS** probabilities;
+    unsigned int state;
+    unsigned int M;
 
   public:
-  	decompressor();
+  	decompressor(int k,int M);
     //void init_probabilities();
     void decompress(const char* file_path,const char* result_path );
     char convert_symbol_to_int( unsigned int count, SYMBOL *s );

@@ -15,11 +15,12 @@ using namespace std;
 
 class compressor{
   private:
-    PROBS* probabilities;
-    unsigned short int scale;
+    PROBS** probabilities;
+    unsigned int state;
+    unsigned int M;
 
   public:
-  	compressor();
+  	compressor(int k,int M);
     //void init_probabilities();
     void compress( const char* file_path,const char* result_path );
     void convert_int_to_symbol( char c, SYMBOL *s );

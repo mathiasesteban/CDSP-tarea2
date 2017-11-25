@@ -6,7 +6,7 @@
 
 using namespace std;
 
-PROBS* initialize_probabilities(unsigned int dimension);
-void update_probabilities(PROBS* &probs,unsigned short int &scale,char c);
+PROBS** initialize_probabilities(int k, int M);
+void update_probabilities(PROBS** &probs,unsigned int state,char c, unsigned int M);
 
 #endif

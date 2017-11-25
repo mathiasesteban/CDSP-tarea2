@@ -20,8 +20,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    compressor* comp = new compressor();
-    decompressor* decomp = new decompressor();
+    compressor* comp = new compressor(0,256);
+    decompressor* decomp = new decompressor(0,256);
 
     string file_path = argv[1];
     string compression_result_path = file_path + "_compressed";
