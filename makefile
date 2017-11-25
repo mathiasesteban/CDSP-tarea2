@@ -22,7 +22,7 @@ obj/decompressor.o: src/bitio.h src/coder.h src/symbol.h src/decompressor.h src/
 objs: obj/bitio.o obj/coder.o obj/initialize_probabilities.o obj/update_probabilities.o obj/change_state.o obj/compressor.o obj/decompressor.o
 
 all: objs
-	g++ main.cpp obj/* -o tarea2
+	g++ -std=c++11 main.cpp obj/* -o tarea2
 
 clean:
 	rm obj/*

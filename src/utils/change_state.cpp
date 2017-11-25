@@ -25,9 +25,9 @@ void change_state(int &state,int k, char c){
   }
   else{
     // Con k=2, 65536 estados
-    k = k << 8;
-    k = k &  65280;
-    k = k | c;
+    state = state << 8;
+    state = state &  65280;
+    state = state | c;
   }
 
 } // Fin change_state
