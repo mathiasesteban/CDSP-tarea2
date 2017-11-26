@@ -9,6 +9,7 @@
 #include "src/decompressor.h"
 #include <string>
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 /*
@@ -103,13 +104,25 @@ int main(int argc, char **argv)
 
         string compression_result_path = path + "_C_K" + to_string(k) + "_M" + to_string(M);
         compressor* comp = new compressor(k,M);
+
+        const clock_t begin_time = clock();
+
         comp->compress(path.c_str(),compression_result_path.c_str());
+
+        std::cout << "Tiempo empleado para la compresion: "  << float( clock () - begin_time ) /  CLOCKS_PER_SEC << "\n\n";
+
         delete(comp);
 
         string decompression_result_path = path + "_D_K" + to_string(k) + "_M" + to_string(M);
         decompressor* decomp = new decompressor(k,M);
+
+        const clock_t begin_time2 = clock();
+
         decomp->decompress(compression_result_path.c_str(),decompression_result_path.c_str());
         delete(decomp);
+
+        std::cout << "Tiempo empleado para la descompresion: "  << float( clock () - begin_time2 ) /  CLOCKS_PER_SEC << "\n\n";
+
 
         cout << "Finalizado correctamente. \n";
         cout << "Ingrese una tecla para continuar: ";

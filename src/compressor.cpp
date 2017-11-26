@@ -45,7 +45,7 @@ void compressor::compress(const char* file_path,const char* result_path)
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
 
-    puts( "Compressing...\n" );
+    puts( "Compressing..." );
 
     initialize_output_bitstream();
     initialize_arithmetic_encoder();
@@ -91,7 +91,6 @@ void compressor::compress(const char* file_path,const char* result_path)
 
         // Por cada Kb leido registro el estado actual
         if (bytesLeidos % 1024 == 0){
-          cout << "passed\n";
           imprimir_estadistica(info_path,state,bytesLeidos,bytesEscritos);
         }
 
@@ -124,7 +123,7 @@ void compressor::convert_int_to_symbol( char c, SYMBOL *s )
             s->scale = probabilities[state][M-1].high;
             return;
         }
-        if ( probabilities[state][i].c == '\0' )
+        if ( (int)probabilities[state][i].c == -1 )
             error_exit( "Trying to encode a char not in the table" );
         i++;
     }

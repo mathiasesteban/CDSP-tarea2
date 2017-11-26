@@ -44,7 +44,7 @@ PROBS** initialize_probabilities(int k, int M){
       probabilities[index].high = i;
     }
 
-    probabilities[M-1].c = '\0';
+    probabilities[M-1].c = -1;
     probabilities[M-1].low = M -1 ;
     probabilities[M-1].high = M;
 

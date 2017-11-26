@@ -45,7 +45,7 @@ void decompressor::decompress(const char* file_path,const char* result_path)
     if ( compressed_file == NULL )
         error_exit( "Could not open output file" );
 
-    puts( "Decoding...\n" );
+    puts( "Decoding..." );
 
     initialize_input_bitstream();
     initialize_arithmetic_decoder( compressed_file );
@@ -69,8 +69,6 @@ void decompressor::decompress(const char* file_path,const char* result_path)
         result_file.put(c);
     }
     /* ----------------------------------------------------- */
-
-    putc( '\n', stdout );
     result_file.close();
 }
 
@@ -97,7 +95,7 @@ char decompressor::convert_symbol_to_int( unsigned int count, SYMBOL *s )
 
             return( probabilities[state][ i ].c );
         }
-        if ( probabilities[state][ i ].c == '\0' )
+        if ( (int)probabilities[state][ i ].c == -1 )
             error_exit( "Failure to decode character" );
         i++;
     }
