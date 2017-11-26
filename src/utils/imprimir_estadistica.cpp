@@ -25,10 +25,13 @@ void imprimir_estadistica(string info_path, int state, unsigned int bytesLeidos,
   std::ofstream estadisticas;
   estadisticas.open(info_path, std::ios_base::app);
 
+  double aux = (float)bytesEscritos/(float)bytesLeidos;
+  double rate = 100 - aux*100;
+
   estadisticas << "Estado: " << state << "(" << string1 << string2 << ") | "
                << "Bytes leidos: " << bytesLeidos << " | "
                << "Bytes escritos: " << bytesEscritos << " | "
-               << "Tasa de compresion: "  <<  ((bytesLeidos - bytesEscritos)*100 / bytesLeidos) << "%\n";
+               << "Tasa de compresion: "  << rate << "%\n";
 
   estadisticas.close();
 }
