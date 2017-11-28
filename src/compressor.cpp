@@ -89,8 +89,8 @@ void compressor::compress(const char* file_path,const char* result_path)
         update_probabilities(probabilities,state,c,M);
         change_state(state,k,c);
 
-        // Por cada Kb leido registro el estado actual
-        if (bytesLeidos % 1024 == 0){
+        // Por cada MB leido registro el estado actual
+        if (bytesLeidos % 10485760 == 0){
           imprimir_estadistica(info_path,state,bytesLeidos,bytesEscritos);
         }
 
